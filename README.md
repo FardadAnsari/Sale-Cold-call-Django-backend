@@ -1,1 +1,0 @@
-# Sale-Cold-call-Django-backend
