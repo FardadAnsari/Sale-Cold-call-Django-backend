@@ -9,7 +9,7 @@ SECRET_KEY = "django-insecure-nuzd_n&+g_@uk$t$#t(26=uf-27b14a2nl+015q(hun%cgt$#v
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://sale.mega-data.co.uk", "*"]
 
 
 # Application definition
