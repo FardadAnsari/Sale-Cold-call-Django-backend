@@ -13,8 +13,6 @@ class CustomPagination(PageNumberPagination):
 
     def get_paginated_response(self, data):
         response_data = {
-            'next': self.get_next_link(),
-            'previous': self.get_previous_link(),
             'totalPages': self.page.paginator.num_pages,
             'currentPage': self.page.number,
             'results': data
@@ -52,17 +50,5 @@ class GoogleMapDataAPIView(ListAPIView):
             'services',
         )
     filter_backends = [DjangoFilterBackend]
-    filterset_fields  = ['search_txt']
-
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+    filterset_fields  = ['search_txt',]
 

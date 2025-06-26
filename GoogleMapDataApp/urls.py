@@ -4,6 +4,6 @@ from . import views
 app_name = 'GoogleMapDataApp'
 
 urlpatterns = [
-    path('', views.GoogleMapDataAPIView.as_view(), name='google-map-report-table'),
+    path('', views.GoogleMapDataAPIView.as_view(), name='google-map-data'),
 
 ]
