@@ -50,5 +50,5 @@ class GoogleMapDataAPIView(ListAPIView):
             'services',
         )
     filter_backends = [DjangoFilterBackend]
-    filterset_fields  = ['search_txt',]
+    filterset_fields  = ['search_txt', 'id']
 
