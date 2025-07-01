@@ -5,6 +5,7 @@ class GoogleMapSerializer(serializers.ModelSerializer):
     class Meta:
         model = GoogleMapModel
         fields = (
+            'id',
             'last_update',
             'shop_id_company',
             'shop_url_company',

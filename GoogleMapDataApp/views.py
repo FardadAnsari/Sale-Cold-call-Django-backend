@@ -31,6 +31,7 @@ class GoogleMapDataAPIView(ListAPIView):
 
 
     queryset = GoogleMapModel.objects.only(
+        'id',
             'last_update',
             'shop_id_company',
             'shop_url_company',
