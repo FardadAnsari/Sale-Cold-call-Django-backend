@@ -1,5 +1,9 @@
 from datetime import timedelta
 from pathlib import Path
+import pymysql
+import os
+OPENAI_API_KEY = os.getenv("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")
+pymysql.install_as_MySQLdb()
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +32,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'corsheaders',
-
+    'AiAssisstanceApp',
     'GoogleMapDataApp.apps.GooglemapdataappConfig',
 
 ]
