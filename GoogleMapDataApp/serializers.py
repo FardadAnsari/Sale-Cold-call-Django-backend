@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from GoogleMapDataApp.models import GoogleMapModel
 
+
 class GoogleMapSerializer(serializers.ModelSerializer):
     class Meta:
         model = GoogleMapModel
