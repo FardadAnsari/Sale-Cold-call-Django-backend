@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'AiAssisstanceApp',
     'GoogleMapDataApp.apps.GooglemapdataappConfig',
     'HistoryApp.apps.HistoryappConfig',
+    'accounts_user.apps.AccountsUserConfig',
 
 ]
 
@@ -47,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'accounts_user.middleware.JsonResponse404Middleware',
 ]
 
 
@@ -197,3 +199,4 @@ SESSION_COOKIE_AGE = 86400
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = "accounts_user.SaleUser"
