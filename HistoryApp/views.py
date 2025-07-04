@@ -10,7 +10,8 @@ from accounts_user.permissions import SelfInfo, Member
 
 
 class CustomPagination(PageNumberPagination):
-    page_size = 6
+    page_size = 4
+
 
 
     def get_paginated_response(self, data):
@@ -43,3 +44,12 @@ class HistoryAPIView(ListAPIView):
 class HistoryDetailAPIView(RetrieveAPIView):
     serializer_class = HistoryModelSerializer
     queryset = HistoryModel.objects.all()
+    permission_classes = [Member, SelfInfo]
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return HistoryModel.objects.all()
+        return HistoryModel.objects.filter(user_id=user.id)
