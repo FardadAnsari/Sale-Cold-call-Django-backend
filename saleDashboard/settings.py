@@ -176,7 +176,7 @@ SIMPLE_JWT = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'panel R&D dashboard API',
-    'DESCRIPTION': 'Mealzo Sale dashboard API',
+    'DESCRIPTION': 'Sale dashboard API',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 
