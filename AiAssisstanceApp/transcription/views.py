@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.views import View
 from AiAssisstanceApp.models import CallRecording
 
