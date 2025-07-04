@@ -59,6 +59,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "https://mega-data.co.uk",
     "https://sale.mega-data.co.uk",
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
 
 ]
 CSRF_TRUSTED_ORIGINS = ["https://sale.mega-data.co.uk",]
