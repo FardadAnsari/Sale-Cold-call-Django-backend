@@ -1,5 +1,5 @@
 import whisper
-from .models import CallRecording
+from AiAssisstanceApp.models import CallRecording
 from .gemini import analyze_transcript_with_gemini
 from django.db import models
 

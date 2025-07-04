@@ -1,0 +1,15 @@
+<!-- templates/result.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transcription Result</title>
+</head>
+<body>
+    <h1>Transcription Result</h1>
+
+    <p><strong>Audio File:</strong> {{ recording.audio_file.url }}</p>
+
+    <h3>Transcript:</h3>
+    <p>{{ recording.transcribed_text|default:"Transcription in progress..." }}</p>
+</body>
+</html>
