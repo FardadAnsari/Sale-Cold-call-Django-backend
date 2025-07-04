@@ -10,7 +10,7 @@ from accounts_user.permissions import SelfInfo, Member
 
 
 class CustomPagination(PageNumberPagination):
-    page_size = 6
+    page_size = 4
 
 
     def get_paginated_response(self, data):
