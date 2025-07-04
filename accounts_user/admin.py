@@ -6,15 +6,26 @@ from .models import SaleUser
 from .forms import UserChangeForm, UserCreationForm
 
 
+
+
+
+admin.site.site_header = 'Sale R&D Panel Admin'
+admin.site.site_title = 'R&D'
+admin.site.index_title = 'R&D Panel'
+
+
+
+
+
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ["email",  "is_admin"]
-    list_filter = ["is_admin"]
+    list_display = ["email", 'name', 'username', 'user_role',]
+    list_filter = ["name", "username"]
     fieldsets = [
         (None, {"fields": ["email", "password"]}),
-        ("Permissions", {"fields": ["is_admin"]}),
+        ("Permissions", {"fields": ["is_active", "is_admin", "is_superuser"]}),
     ]
 
     add_fieldsets = [
@@ -22,7 +33,7 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ["wide"],
-                "fields": ["email", "password1", "password2"],
+                "fields": ["email", "username", "password1", "password2", "is_active", "is_admin", "is_superuser"],
             },
         ),
     ]
