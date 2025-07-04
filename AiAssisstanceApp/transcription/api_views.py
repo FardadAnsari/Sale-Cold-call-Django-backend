@@ -5,6 +5,7 @@ from rest_framework import status
 from AiAssisstanceApp.models import CallRecording
 from .transcriber import run_transcription
 from drf_spectacular.utils import extend_schema, OpenApiTypes
+from rest_framework.generics import get_object_or_404
 
 class UploadAudioAPIView(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -27,3 +28,18 @@ class UploadAudioAPIView(APIView):
             "message": "Upload successful. Transcription started.",
             "recording_id": recording.id
         }, status=status.HTTP_201_CREATED)
+    
+class TranscriptionResultAPIView(APIView):
+    @extend_schema(
+        responses={200: dict},
+        description="Get the transcription result by recording ID",
+    )
+    def get(self, request, recording_id):
+        recording = get_object_or_404(CallRecording, pk=recording_id)
+        return Response({
+            "id": recording.id,
+            "agent_id": recording.agent_id,
+            "created_at": recording.created_at,
+            "transcribed_text": recording.transcribed_text,
+            "gemini_feedback": recording.gemini_feedback,
+        })
