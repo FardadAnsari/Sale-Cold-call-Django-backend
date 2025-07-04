@@ -14,7 +14,7 @@ class Member(BasePermission):
 
 class SelfInfo(BasePermission):
     def has_object_permission(self, request, view, obj):
-        if not request.user or not request.user.is_authenticated:
+        if request.user.is_anonymous:
             return False
         if request.user.is_superuser:
             return True
