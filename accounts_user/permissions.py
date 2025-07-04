@@ -10,3 +10,12 @@ class Member(BasePermission):
             request.user.is_authenticated and
             (request.user.is_active or request.user.is_superuser)
         )
+
+
+class SelfInfo(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if not request.user or not request.user.is_authenticated:
+            return False
+        if request.user.is_superuser:
+            return True
+        return obj.user_id == request.user
