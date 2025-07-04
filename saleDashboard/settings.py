@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'GoogleMapDataApp.apps.GooglemapdataappConfig',
     'HistoryApp.apps.HistoryappConfig',
     'accounts_user.apps.AccountsUserConfig',
+    'zohoapi.apps.ZohoapiConfig',
 
 ]
 
@@ -162,8 +163,6 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
-
-
 }
 
 SIMPLE_JWT = {
