@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'AiAssisstanceApp',
     'GoogleMapDataApp.apps.GooglemapdataappConfig',
+    'HistoryApp.apps.HistoryappConfig',
+    'accounts_user.apps.AccountsUserConfig',
 
 ]
 
@@ -46,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'accounts_user.middleware.JsonResponse404Middleware',
 ]
 
 
@@ -156,6 +159,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
 
 
 }
@@ -173,7 +179,7 @@ SIMPLE_JWT = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'panel R&D dashboard API',
-    'DESCRIPTION': 'Mealzo Sale dashboard API',
+    'DESCRIPTION': 'Sale dashboard API',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 
@@ -196,3 +202,4 @@ SESSION_COOKIE_AGE = 86400
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = "accounts_user.SaleUser"
