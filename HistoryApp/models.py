@@ -13,3 +13,16 @@ class HistoryModel(models.Model):
 
     def __str__(self):
         return self.call_time
+
+
+class SaleSessionModel(models.Model):
+    start_time = models.DateTimeField(null=True)
+    last_update = models.DateTimeField(null=True)
+    close_time= models.DateTimeField(null=True)
+    customer_id = models.PositiveIntegerField(null=False)
+    created_by = models.PositiveIntegerField(null=True)
+    stage_id = models.IntegerField(null=True)
+    status = models.CharField(max_length=64, null=True, blank=True)
+
+    class Meta:
+        db_table = 'sale_session'
