@@ -11,7 +11,8 @@ urlpatterns = [
 
     path('stages/', views.StageListAPIView.as_view(), name='stage-list'),
     # path('stages/<int:pk>/', views.StageDetailAPIView.as_view(), name='stage-detail'),
-
     path('sale-sessions/', views.SaleSessionListAPIView.as_view(), name='salesession-list'),
+    path('sale-sessions/create/', views.SaleSessionCreateAPIView.as_view(), name='salesession-create'),
+    path('sale-sessions/<int:pk>/update/', views.SaleSessionUpdateAPIView.as_view(), name='salesession-update'),
 
 ]

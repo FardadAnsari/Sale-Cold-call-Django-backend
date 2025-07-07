@@ -54,7 +54,7 @@ class SaleSessionModel(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         related_name='created_sale_sessions',
-        db_column='created_by'  # ← همین!
+        db_column='created_by'
     )
     status = models.CharField(max_length=64, null=True, blank=True)
 
