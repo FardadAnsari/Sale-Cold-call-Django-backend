@@ -2,6 +2,24 @@ import whisper
 from AiAssisstanceApp.models import CallRecording
 from .gemini import analyze_transcript_with_gemini
 from django.db import models
+import subprocess
+import os
+os.environ["PATH"] += os.pathsep + r"C:\ffmpeg\bin"
+
+def load_audio_with_explicit_ffmpeg(path):
+    cmd = [
+        r"C:\ffmpeg\bin\ffmpeg.exe",  # full path
+        "-nostdin",
+        "-threads", "0",
+        "-i", path,
+        "-f", "f32le",
+        "-ac", "1",
+        "-ar", "16000",
+        "-"
+    ]
+    out = subprocess.run(cmd, capture_output=True, check=True).stdout
+    return out
+
 
 # WARNING: Don't expose this key in production
 GEMINI_API_KEY = "AIzaSyBitLKpEAB16BWY5h8MI10y6AOFQfzRHiU"
