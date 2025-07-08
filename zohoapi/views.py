@@ -1,15 +1,18 @@
 import requests
+import logging
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ZohoLeadSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class ZohoAccountsExporter:
-    def __init__(self, client_id, client_secret, refresh_token):
-        self.client_id = client_id
-        self.client_secret = client_secret
-        self.refresh_token = refresh_token
+    def __init__(self):
+        self.client_id = "1000.VRPJQPM9K4QABZX0I1UMYV4VFJ15SU"
+        self.client_secret = "c83aff8e09e1880580d9db4268c1402d10be4dd867"
+        self.refresh_token = "1000.be5ffcc266343e30324c709ffc2720a4.40b5ab8a46744d89c28aa8b0ece24581"
         self.access_token = self._get_access_token()
 
     def _get_access_token(self):
@@ -21,9 +24,16 @@ class ZohoAccountsExporter:
             "grant_type": "refresh_token"
         }
 
+        logger.info(f"🔑 Fetching Zoho access token")
         response = requests.post(url, params=params)
-        response.raise_for_status()
-        return response.json().get("access_token")
+        try:
+            response.raise_for_status()
+            access_token = response.json().get("access_token")
+            logger.info(f"✅ Zoho access token received")
+            return access_token
+        except requests.exceptions.HTTPError:
+            logger.error(f"❌ Zoho token error: {response.text}")
+            raise
 
     def create_lead_record(self, lead_data):
         url = "https://www.zohoapis.eu/crm/v3/Leads/upsert"
@@ -32,9 +42,18 @@ class ZohoAccountsExporter:
             "Content-Type": "application/json"
         }
 
+        # 🔒 Force Tag to always have your fixed value
+        for record in lead_data.get("data", []):
+            record["Tag"] = [
+                {
+                    "name": "Onboareding Zone App",
+                    "id": "458329000059988037"
+                }
+            ]
+
         payload = {
             "data": lead_data.get("data"),
-            "apply_feature_execution": lead_data.get("apply_feature_execution", []),
+            "apply_feature_execution": lead_data.get("apply_feature_execution", [{"name": "layout_rules"}]),
             "skip_feature_execution": lead_data.get("skip_feature_execution", []),
             "trigger": lead_data.get("trigger", [])
         }
@@ -47,21 +66,19 @@ class ZohoAccountsExporter:
             print(f"❌ Failed to create lead: {response.text}")
             raise
 
+
 class CreateZohoLeadView(APIView):
-    serializer_class = ZohoLeadSerializer
+    """
+    POST: Create or upsert a Zoho CRM lead record.
+    """
 
     def post(self, request):
-        serializer = ZohoLeadSerializer(data=request.data)
-        if serializer.is_valid():
-            client_id = "1000.VRPJQPM9K4QABZX0I1UMYV4VFJ15SU"
-            client_secret = "c83aff8e09e1880580d9db4268c1402d10be4dd867"
-            refresh_token = "1000.b1eff341887bb5f515019933a089c0c9.286bb64997985f1448bc47b211ab5a10"
+        logger.info(f"📥 Incoming lead data: {request.data}")
 
-            zoho_exporter = ZohoAccountsExporter(client_id, client_secret, refresh_token)
-            try:
-                result = zoho_exporter.create_lead_record(serializer.validated_data)
-                return Response(result, status=status.HTTP_200_OK)
-            except Exception as e:
-                return Response({"error": f"Failed to create lead in Zoho: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        zoho_exporter = ZohoAccountsExporter()
+        try:
+            result = zoho_exporter.create_lead_record(request.data)
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.exception("❌ Error while creating Zoho lead record")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
