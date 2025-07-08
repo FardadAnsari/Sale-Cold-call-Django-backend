@@ -55,7 +55,7 @@ class CreateZohoLeadView(APIView):
         if serializer.is_valid():
             client_id = "1000.VRPJQPM9K4QABZX0I1UMYV4VFJ15SU"
             client_secret = "c83aff8e09e1880580d9db4268c1402d10be4dd867"
-            refresh_token = "1000.5186732c29ad0e5589e26ea9d8325e3c.8890ee1a080e988f8f8a4ab14c8ce589"
+            refresh_token = "1000.b1eff341887bb5f515019933a089c0c9.286bb64997985f1448bc47b211ab5a10"
 
             zoho_exporter = ZohoAccountsExporter(client_id, client_secret, refresh_token)
             try:
