@@ -32,6 +32,9 @@ class StageModel(models.Model):
     class Meta:
         db_table = 'stage'
 
+
+
+ 
 class SaleSessionModel(models.Model):
     start_time = models.DateTimeField(null=True)
     last_update = models.DateTimeField(null=True)
@@ -65,32 +68,16 @@ class SaleSessionModel(models.Model):
         return f"Session for {self.customer} on {self.start_time}"
 
 
+
 class HistoryModel(models.Model):
-    customer = models.ForeignKey(
-        CustomerModel,
-        on_delete=models.CASCADE,
-        related_name='histories'
-    )
-    sale_session = models.ForeignKey(
-        SaleSessionModel,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='histories'
-    )
-    action = models.CharField(max_length=255)
-    details = models.TextField(null=True, blank=True)
-    changed_by = models.ForeignKey(
-        SaleUser,
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name='history_changes'
-    )
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"History for {self.customer} - {self.action}"
+    date = models.DateTimeField()
+    sale_session_id = models.IntegerField()
+    user_id = models.ForeignKey(SaleUser, on_delete=models.CASCADE, db_column='user_id')
+    call_time = models.CharField(max_length=128)
+    description = models.TextField()
 
     class Meta:
         db_table = 'history'
+
+    def __str__(self):
+        return self.call_time

@@ -20,6 +20,11 @@ class StageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class SaleSessionSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = SaleSessionModel
         fields = '__all__'
+        read_only_fields = ['created_by',]
+
+
+
