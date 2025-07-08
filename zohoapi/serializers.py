@@ -6,8 +6,8 @@ class OwnerSerializer(serializers.Serializer):
 
 
 class TagSerializer(serializers.Serializer):
-    name = serializers.CharField()
-    id = serializers.CharField()
+    name = serializers.CharField(default='Onboareding Zone App')
+    id = serializers.CharField(default='458329000059988037')
 
 
 class LeadDataSerializer(serializers.Serializer):
@@ -18,17 +18,17 @@ class LeadDataSerializer(serializers.Serializer):
     Previous_Name = serializers.CharField(required=False, allow_blank=True)
     Company_Registered_Name=serializers.CharField(required=False, allow_blank=True)
     Phone=serializers.CharField(required=False, allow_blank=True)
-    Phone_2=serializers.CharField(required=False, allow_blank=True)
+    Phone2=serializers.CharField(required=False, allow_blank=True)
     First_Name = serializers.CharField(required=False, allow_blank=True)
     Last_Name = serializers.CharField(required=True)
     Mobile=serializers.CharField(required=False, allow_blank=True)
     Email = serializers.EmailField(required=False, allow_blank=True)
-    Website=serializers.CharField(required=False, allow_blank=True)
+    #Website=serializers.CharField(required=False, allow_blank=True)
     Lead_Status=serializers.CharField(required=False, allow_blank=True)
     stage=serializers.CharField(required=False, allow_blank=True)
     Lead_Source=serializers.CharField(required=False, allow_blank=True)
     Industry=serializers.CharField(required=False, allow_blank=True)
-    Sales_Participants=serializers.CharField(required=False, allow_blank=True)
+    #Sales_Participants=serializers.CharField(required=False, allow_blank=True)
     Area=serializers.CharField(required=False, allow_blank=True)
     Interest_Rate=serializers.CharField(required=False, allow_blank=True)
     Last_Caller=serializers.CharField(required=False, allow_blank=True)
@@ -63,7 +63,9 @@ class ZohoLeadSerializer(serializers.Serializer):
     apply_feature_execution = serializers.ListField(
         child=FeatureExecutionSerializer(),
         required=False,
-        default=[]
+        default=[
+            {"name":"layout_rules"}
+        ]
     )
     skip_feature_execution = serializers.ListField(
         child=FeatureExecutionSerializer(),
