@@ -6,6 +6,7 @@ from GoogleMapDataApp.models import GoogleMapModel
 class CustomerModel(models.Model):
     customer_google_business = models.ForeignKey(
         GoogleMapModel,
+        to_field='shop_id_company',  
         db_column='customer_google_business',
         on_delete=models.CASCADE,
         null=True,
