@@ -12,7 +12,7 @@ class ZohoAccountsExporter:
     def __init__(self):
         self.client_id = "1000.VRPJQPM9K4QABZX0I1UMYV4VFJ15SU"
         self.client_secret = "c83aff8e09e1880580d9db4268c1402d10be4dd867"
-        self.refresh_token = "1000.be5ffcc266343e30324c709ffc2720a4.40b5ab8a46744d89c28aa8b0ece24581"
+        self.refresh_token = "1000.cea46f85d414f7d0e8c470d1006b1d69.3f2d966d67736620bfbababee024e565"
         self.access_token = self._get_access_token()
 
     def _get_access_token(self):
