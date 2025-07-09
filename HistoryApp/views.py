@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from .filters import HistoryFilter
 from .models import HistoryModel, CustomerModel, StageModel, SaleSessionModel
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, ListCreateAPIView
 from rest_framework.pagination import PageNumberPagination
 from .serializers import HistoryModelSerializer, CustomerSerializer, StageSerializer, SaleSessionSerializer
 from django_filters.rest_framework import DjangoFilterBackend
@@ -30,18 +30,20 @@ class CustomPagination(PageNumberPagination):
         return Response(response_data)
 
 class HistoryAPIView(ListAPIView):
-    permission_classes = [Member,SelfInfo]
+    permission_classes = [Member, SelfInfo]
     serializer_class = HistoryModelSerializer
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = HistoryFilter
 
-
     def get_queryset(self):
         user = self.request.user
-        if user.is_superuser:
+        call_param = self.request.query_params.get('call')
+
+        if call_param == 'all':
             return HistoryModel.objects.all()
-        return HistoryModel.objects.filter(user_id=user.id)
+        else:
+            return HistoryModel.objects.filter(user_id=user.id)
 
 
 class HistoryDetailAPIView(RetrieveAPIView):
@@ -56,7 +58,15 @@ class HistoryDetailAPIView(RetrieveAPIView):
         if user.is_superuser:
             return HistoryModel.objects.all()
         return HistoryModel.objects.filter(user_id=user.id)
+    
+class HistoryAllCallAPIView(ListAPIView):
+    serializer_class = HistoryModelSerializer
+    pagination_class = CustomPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = HistoryFilter
 
+    def get_queryset(self):
+        return HistoryModel.objects.all()
 
 class CustomerListAPIView(APIView):
     serializer_class = CustomerSerializer
@@ -65,13 +75,15 @@ class CustomerListAPIView(APIView):
         serializer = CustomerSerializer(queryset, many=True)
         return Response(serializer.data)
 
+class CustomerCallFormSubmitView(APIView):
+    serializer_class = CustomerSerializer
+
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class CustomerDetailAPIView(APIView):
     serializer_class = CustomerSerializer
@@ -96,12 +108,29 @@ class SaleSessionListAPIView(ListAPIView):
     serializer_class = SaleSessionSerializer
 
 
+
+class SaleSessionDetailAPIView(RetrieveAPIView):
+    queryset = SaleSessionModel.objects.all()
+    serializer_class = SaleSessionSerializer
+
+
+
 class SaleSessionCreateAPIView(CreateAPIView):
     queryset = SaleSessionModel.objects.all()
     serializer_class = SaleSessionSerializer
 
 
-
-class SaleSessionUpdateAPIView(UpdateAPIView):
-    queryset = SaleSessionModel.objects.all()
+class SaleSessionUpdateAPIView(APIView):
     serializer_class = SaleSessionSerializer
+
+    def patch(self, request, pk, *args, **kwargs):
+        sale_session = get_object_or_404(SaleSessionModel, pk=pk)
+        
+        serializer = self.serializer_class(sale_session, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

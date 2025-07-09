@@ -5,9 +5,13 @@ from .models import HistoryModel, CustomerModel, StageModel, SaleSessionModel
 from GoogleMapDataApp.serializers import GoogleMapSerializer
 
 class HistoryModelSerializer(serializers.ModelSerializer):
+    user_id = serializers.SerializerMethodField()
     class Meta:
         model = HistoryModel
         fields = '__all__'
+
+    def get_user_id(self, obj):
+        return obj.SaleUser.username if obj.user else None
 
 
 class CustomerSerializer(serializers.ModelSerializer):
