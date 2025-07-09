@@ -9,6 +9,7 @@ from rest_framework.pagination import PageNumberPagination
 from .serializers import HistoryModelSerializer, CustomerSerializer, StageSerializer, SaleSessionSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from accounts_user.permissions import SelfInfo, Member
+from GoogleMapDataApp.models import GoogleMapModel
 
 
 class CustomPagination(PageNumberPagination):
@@ -65,10 +66,11 @@ class CustomerListAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        serializer = CustomerSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CustomerDetailAPIView(APIView):
