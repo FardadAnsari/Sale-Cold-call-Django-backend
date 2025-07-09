@@ -15,7 +15,7 @@ class CustomerModel(models.Model):
     )
     customer_name = models.CharField(max_length=255, null=True, blank=True)
     customer_phone = models.CharField(max_length=255, null=True, blank=True)
-    customer_email = models.CharField(max_length=255, null=True, blank=True)
+    customer_assistant_phone = models.CharField(max_length=255, null=True, blank=True)
     customer_assistant_name = models.CharField(max_length=255, null=True, blank=True)
     customer_availability = models.JSONField(null=True, blank=True)
 
