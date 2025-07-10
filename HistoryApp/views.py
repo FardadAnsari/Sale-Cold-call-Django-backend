@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
-from .filters import HistoryFilter
+from .filters import HistoryFilter, SaleSessionFilter
 from .models import HistoryModel, CustomerModel, StageModel, SaleSessionModel
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -12,7 +12,7 @@ from .serializers import HistoryModelSerializer, CustomerSerializer, StageSerial
 from django_filters.rest_framework import DjangoFilterBackend
 from accounts_user.permissions import SelfInfo, Member
 from GoogleMapDataApp.models import GoogleMapShopsModel
-
+from accounts_user.permissions import Member
 
 class CustomPagination(PageNumberPagination):
     page_size = 4
@@ -62,6 +62,8 @@ class HistoryDetailAPIView(RetrieveAPIView):
         return HistoryModel.objects.filter(user_id=user.id)
     
 class HistoryAllCallAPIView(ListAPIView):
+    permission_classes = [Member]
+
     serializer_class = HistoryModelSerializer
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend]
@@ -88,6 +90,8 @@ class UpdateCustomerDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CustomerDetailAPIView(APIView):
+    permission_classes = [Member]
+
     serializer_class = CustomerSerializer
 
     def get(self, request, pk, *args, **kwargs):
@@ -101,12 +105,17 @@ class CustomerDetailAPIView(APIView):
 
 
 class SaleSessionListAPIView(ListAPIView):
+    permission_classes = [Member]
     queryset = SaleSessionModel.objects.all()
     serializer_class = SaleSessionNameSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = SaleSessionFilter
+
 
 
 
 class GetSaleSessionDetailAPIView(APIView):
+    permission_classes = [Member]
     serializer_class = GetSaleSessionDetailSerializer
 
     def get(self, request, *args, **kwargs):
@@ -117,12 +126,14 @@ class GetSaleSessionDetailAPIView(APIView):
 
 
 class SaleSessionDetailAPIView(RetrieveAPIView):
+    permission_classes = [Member]
     queryset = SaleSessionModel.objects.all()
     serializer_class = SaleSessionNameSerializer
 
 
 
 class CreateSaleSessionView(APIView):
+    permission_classes = [Member]
     serializer_class = CreateSaleSessionSerializer
 
     def post(self, request, *args, **kwargs):
@@ -136,6 +147,7 @@ class CreateSaleSessionView(APIView):
 
 
 class SaleSessionUpdateAPIView(APIView):
+    permission_classes = [Member]
     serializer_class = SaleSessionNameSerializer
 
     def patch(self, request, pk, *args, **kwargs):
@@ -153,6 +165,7 @@ class SaleSessionUpdateAPIView(APIView):
 
 
 class CreateHistoryView(APIView):
+    permission_classes = [Member]
     serializer_class = CreateHistorySerializer
     def post(self, request):
         serializer = CreateHistorySerializer(data=request.data)
