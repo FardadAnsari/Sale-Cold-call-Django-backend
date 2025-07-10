@@ -6,7 +6,7 @@ from .models import HistoryModel, CustomerModel, StageModel, SaleSessionModel
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
-from .serializers import HistoryModelSerializer, CustomerSerializer, StageSerializer, CreateSaleSessionSerializer, SaleSessionNameSerializer
+from .serializers import GetSaleSessionDetailSerializer, HistoryModelSerializer, CustomerSerializer, StageSerializer, CreateSaleSessionSerializer, SaleSessionNameSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from accounts_user.permissions import SelfInfo, Member
 from GoogleMapDataApp.models import GoogleMapShopsModel
@@ -102,6 +102,16 @@ class SaleSessionListAPIView(ListAPIView):
     queryset = SaleSessionModel.objects.all()
     serializer_class = SaleSessionNameSerializer
 
+
+
+class GetSaleSessionDetailAPIView(APIView):
+    serializer_class = GetSaleSessionDetailSerializer
+
+    def get(self, request, *args, **kwargs):
+        sale_session_id = kwargs.get('pk')
+        sale_session = get_object_or_404(SaleSessionModel, pk=sale_session_id)
+        serializer = self.serializer_class(sale_session)
+        return Response(serializer.data)
 
 
 class SaleSessionDetailAPIView(RetrieveAPIView):
