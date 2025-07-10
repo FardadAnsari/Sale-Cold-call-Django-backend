@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from GoogleMapDataApp.models import GoogleMapShopsModel
-from .models import HistoryModel, CustomerModel, StageModel, SaleSessionModel
+from .models import HistoryModel, CustomerModel, StageModel, SaleSessionModel, SaleUser  
 from GoogleMapDataApp.serializers import GoogleMapShopsSerializer
 
 class HistoryModelSerializer(serializers.ModelSerializer):
@@ -62,3 +62,20 @@ class CreateSaleSessionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CreateHistorySerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField()
+    sale_session_id = serializers.IntegerField()
+    call_description = serializers.CharField(source='description', allow_blank=True)
+    
+    class Meta:
+        model = HistoryModel
+        fields = ['date', 'user_id','call_time', 'sale_session_id', 'call_description']
+
+    def create(self, validated_data):
+        user_id = validated_data.pop('user_id')
+        sale_session_id = validated_data.pop('sale_session_id')
+
+        validated_data['user'] = SaleUser.objects.get(id=user_id)
+        validated_data['sale_session'] = SaleSessionModel.objects.get(id=sale_session_id)
+
+        return HistoryModel.objects.create(**validated_data)

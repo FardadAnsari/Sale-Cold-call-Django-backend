@@ -63,8 +63,21 @@ class SaleSessionModel(models.Model):
 
 class HistoryModel(models.Model):
     date = models.DateTimeField()
-    sale_session_id = models.IntegerField()
-    user_id = models.ForeignKey(SaleUser, on_delete=models.CASCADE, db_column='user_id')
+
+    sale_session = models.ForeignKey(  
+        SaleSessionModel,
+        on_delete=models.CASCADE,
+        db_column='sale_session_id',
+        related_name='histories'
+    )
+
+    user = models.ForeignKey(  
+        SaleUser,
+        on_delete=models.CASCADE,
+        db_column='user_id',
+        related_name='history_entries'
+    )
+
     call_time = models.CharField(max_length=128)
     description = models.TextField()
 
@@ -72,4 +85,4 @@ class HistoryModel(models.Model):
         db_table = 'history'
 
     def __str__(self):
-        return self.call_time
+        return f"{self.date} - {self.call_time}"

@@ -6,7 +6,7 @@ from .models import HistoryModel, CustomerModel, StageModel, SaleSessionModel
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
-from .serializers import HistoryModelSerializer, CustomerSerializer, StageSerializer, CreateSaleSessionSerializer, SaleSessionNameSerializer
+from .serializers import HistoryModelSerializer, CustomerSerializer, StageSerializer, CreateSaleSessionSerializer, SaleSessionNameSerializer, CreateHistorySerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from accounts_user.permissions import SelfInfo, Member
 from GoogleMapDataApp.models import GoogleMapShopsModel
@@ -137,3 +137,14 @@ class SaleSessionUpdateAPIView(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+
+class CreateHistoryView(APIView):
+    serializer_class = CreateHistorySerializer
+    def post(self, request):
+        serializer = CreateHistorySerializer(data=request.data)
+        if serializer.is_valid():
+            instance = serializer.save()
+            return Response({"message": "History created successfully."}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
