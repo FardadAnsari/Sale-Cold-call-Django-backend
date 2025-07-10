@@ -72,7 +72,8 @@ class HistoryAllCallAPIView(ListAPIView):
     def get_queryset(self):
         return HistoryModel.objects.all()
 
-class CustomerListAPIView(APIView):
+class CallHistoryVies(APIView):
+    permission_classes = [Member]
     serializer_class = CustomerSerializer
     def get(self, request, *args, **kwargs):
         queryset = CustomerModel.objects.all()
@@ -80,6 +81,7 @@ class CustomerListAPIView(APIView):
         return Response(serializer.data)
 
 class UpdateCustomerDetailView(APIView):
+    permission_classes=[Member]
     serializer_class = CustomerSerializer
 
     def put(self, request, *args, **kwargs):
