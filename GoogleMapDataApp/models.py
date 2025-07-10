@@ -1,6 +1,6 @@
 from django.db import models
 
-class GoogleMapModel(models.Model):
+class GoogleMapShopsModel(models.Model):
     last_update = models.DateTimeField()
     shop_id_company = models.CharField(max_length=128, unique=True)
     shop_url_company = models.CharField(max_length=512, null=True, blank=True)

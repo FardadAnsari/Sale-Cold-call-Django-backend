@@ -4,12 +4,12 @@ from rest_framework.views import APIView
 from .filters import HistoryFilter
 from .models import HistoryModel, CustomerModel, StageModel, SaleSessionModel
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, ListCreateAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
-from .serializers import HistoryModelSerializer, CustomerSerializer, StageSerializer, SaleSessionSerializer
+from .serializers import HistoryModelSerializer, CustomerSerializer, StageSerializer, CreateSaleSessionSerializer, SaleSessionNameSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from accounts_user.permissions import SelfInfo, Member
-from GoogleMapDataApp.models import GoogleMapModel
+from GoogleMapDataApp.models import GoogleMapShopsModel
 
 
 class CustomPagination(PageNumberPagination):
@@ -75,10 +75,10 @@ class CustomerListAPIView(APIView):
         serializer = CustomerSerializer(queryset, many=True)
         return Response(serializer.data)
 
-class CustomerCallFormSubmitView(APIView):
+class UpdateCustomerDetailView(APIView):
     serializer_class = CustomerSerializer
 
-    def post(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -94,34 +94,37 @@ class CustomerDetailAPIView(APIView):
         return Response(serializer.data)
 
 
-class StageListAPIView(APIView):
-    serializer_class = StageSerializer
-    def get(self, request, *args, **kwargs):
-        queryset = StageModel.objects.all()
-        serializer = StageSerializer(queryset, many=True)
-        return Response(serializer.data)
+
 
 
 
 class SaleSessionListAPIView(ListAPIView):
     queryset = SaleSessionModel.objects.all()
-    serializer_class = SaleSessionSerializer
+    serializer_class = SaleSessionNameSerializer
 
 
 
 class SaleSessionDetailAPIView(RetrieveAPIView):
     queryset = SaleSessionModel.objects.all()
-    serializer_class = SaleSessionSerializer
+    serializer_class = SaleSessionNameSerializer
 
 
 
-class SaleSessionCreateAPIView(CreateAPIView):
-    queryset = SaleSessionModel.objects.all()
-    serializer_class = SaleSessionSerializer
+class CreateSaleSessionView(APIView):
+    serializer_class = CreateSaleSessionSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SaleSessionUpdateAPIView(APIView):
-    serializer_class = SaleSessionSerializer
+    serializer_class = SaleSessionNameSerializer
 
     def patch(self, request, pk, *args, **kwargs):
         sale_session = get_object_or_404(SaleSessionModel, pk=pk)

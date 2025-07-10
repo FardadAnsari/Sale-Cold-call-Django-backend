@@ -1,11 +1,11 @@
 from django.db import models
 from accounts_user.models import SaleUser
-from GoogleMapDataApp.models import GoogleMapModel
+from GoogleMapDataApp.models import GoogleMapShopsModel
 
 
 class CustomerModel(models.Model):
     customer_google_business = models.ForeignKey(
-        GoogleMapModel,
+        GoogleMapShopsModel,
         to_field='shop_id_company',  
         db_column='customer_google_business',
         on_delete=models.CASCADE,
@@ -46,13 +46,7 @@ class SaleSessionModel(models.Model):
         related_name='sale_sessions',
         db_column='customer_id'
     )
-    stage = models.ForeignKey(
-        'StageModel',
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name='sale_sessions',
-        db_column='stage_id'
-    )
+    stage = models.CharField(max_length=255, null=True, blank=True, db_column='stage_name')
     created_by = models.ForeignKey(
         SaleUser,
         on_delete=models.SET_NULL,
@@ -60,15 +54,12 @@ class SaleSessionModel(models.Model):
         related_name='created_sale_sessions',
         db_column='created_by'
     )
-    status = models.CharField(max_length=64, null=True, blank=True)
 
     class Meta:
         db_table = 'sale_sessions'
 
-    def __str__(self):
+    def str(self):
         return f"Session for {self.customer} on {self.start_time}"
-
-
 
 class HistoryModel(models.Model):
     date = models.DateTimeField()

@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from GoogleMapDataApp.models import GoogleMapModel
+from GoogleMapDataApp.models import GoogleMapShopsModel
 
 
-class GoogleMapSerializer(serializers.ModelSerializer):
+class GoogleMapShopsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = GoogleMapModel
+        model = GoogleMapShopsModel
         fields = (
             'id',
             'last_update',

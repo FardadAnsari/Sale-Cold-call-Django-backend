@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('google-map-data/', include("GoogleMapDataApp.urls")),
+    path('Shops/', include("GoogleMapDataApp.urls")),
     path('user/', include('accounts_user.urls')),
     path('ai/', include("AiAssisstanceApp.urls")),
     path('history/', include('HistoryApp.urls')),

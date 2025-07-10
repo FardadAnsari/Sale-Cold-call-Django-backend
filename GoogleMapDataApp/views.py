@@ -4,8 +4,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from .serializers import GoogleMapSerializer
-from .models import GoogleMapModel
+from .serializers import GoogleMapShopsSerializer
+from .models import GoogleMapShopsModel
 from .filters import GoogleMapFilter
 
 
@@ -24,11 +24,11 @@ class CustomPagination(PageNumberPagination):
         return Response(response_data)
 
 
-class GoogleMapDataAPIView(ListAPIView):
+class GoogleMapShopDataAPIView(ListAPIView):
     pagination_class = CustomPagination
-    serializer_class = GoogleMapSerializer
+    serializer_class = GoogleMapShopsSerializer
 
-    queryset = GoogleMapModel.objects.all()
+    queryset = GoogleMapShopsModel.objects.all()
 
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields  = ['id', 'servis_type']
