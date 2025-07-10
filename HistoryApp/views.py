@@ -72,7 +72,7 @@ class HistoryAllCallAPIView(ListAPIView):
     def get_queryset(self):
         return HistoryModel.objects.all()
 
-class CallHistoryVies(APIView):
+class CallHistoryViews(APIView):
     permission_classes = [Member]
     serializer_class = CustomerSerializer
     def get(self, request, *args, **kwargs):
