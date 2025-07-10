@@ -8,7 +8,7 @@ from .serializers import GoogleMapShopsSerializer
 from .models import GoogleMapShopsModel
 from .filters import GoogleMapFilter
 
-
+from accounts_user.permissions import Member 
 
 class CustomPagination(PageNumberPagination):
     page_size = 10
@@ -25,13 +25,13 @@ class CustomPagination(PageNumberPagination):
 
 
 class GoogleMapShopDataAPIView(ListAPIView):
+    permission_classes = [Member]
     pagination_class = CustomPagination
     serializer_class = GoogleMapShopsSerializer
 
     queryset = GoogleMapShopsModel.objects.all()
 
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields  = ['id', 'servis_type']
     filterset_class = GoogleMapFilter
     search_fields = ['shop_name']
 

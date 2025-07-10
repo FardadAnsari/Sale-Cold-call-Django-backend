@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from accounts_user.permissions import Member
+
 logger = logging.getLogger(__name__)
 
 
@@ -68,9 +70,8 @@ class ZohoAccountsExporter:
 
 
 class CreateZohoLeadView(APIView):
-    """
-    POST: Create or upsert a Zoho CRM lead record.
-    """
+    permission_classes = [Member]
+
 
     def post(self, request):
         logger.info(f"📥 Incoming lead data: {request.data}")
@@ -82,3 +83,6 @@ class CreateZohoLeadView(APIView):
         except Exception as e:
             logger.exception("❌ Error while creating Zoho lead record")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
