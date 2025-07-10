@@ -19,5 +19,6 @@ urlpatterns = [
     path('create-sale-session/', views.CreateSaleSessionView.as_view(), name='sale-session-create'),
     path('sale-sessions-update/<int:pk>/', views.SaleSessionUpdateAPIView.as_view(), name='salesession-update'),
     path('sale-sessions-detail/<int:pk>/', views.SaleSessionDetailAPIView.as_view(), name='salesession-detail'),
+    path('get-sale-session/<int:pk>/', views.GetSaleSessionDetailAPIView.as_view(), name='sale-session-detail'),
 
 ]

@@ -5,7 +5,7 @@ from .models import HistoryModel, CustomerModel, StageModel, SaleSessionModel, S
 from GoogleMapDataApp.serializers import GoogleMapShopsSerializer
 
 class HistoryModelSerializer(serializers.ModelSerializer):
-    user_id = serializers.CharField(source='user_id.username', read_only=True)
+    user_name = serializers.CharField(source='user_id.username', read_only=True)
     class Meta:
         model = HistoryModel
         fields = '__all__'
@@ -62,6 +62,34 @@ class CreateSaleSessionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
+
+
+class GetSaleSessionDetailSerializer(serializers.ModelSerializer):
+    sale_session = serializers.SerializerMethodField()
+    customer = serializers.SerializerMethodField()
+    googlemaps = serializers.SerializerMethodField()
+    history = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SaleSessionModel
+        fields = ['sale_session', 'customer', 'googlemaps', 'history']
+
+    def get_sale_session(self, obj):
+        from .serializers import SaleSessionNameSerializer
+        return SaleSessionNameSerializer(obj).data
+
+    def get_customer(self, obj):
+        return CustomerSerializer(obj.customer).data
+
+    def get_googlemaps(self, obj):
+        customer_data = CustomerSerializer(obj.customer).data
+        return customer_data.get('customer_google_business', {})
+
+    def get_history(self, obj):
+        history_qs = HistoryModel.objects.filter(sale_session_id=obj.id).order_by('-date')
+        return HistoryModelSerializer(history_qs, many=True).data
+
 class CreateHistorySerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField()
     sale_session_id = serializers.IntegerField()
@@ -79,3 +107,4 @@ class CreateHistorySerializer(serializers.ModelSerializer):
         validated_data['sale_session'] = SaleSessionModel.objects.get(id=sale_session_id)
 
         return HistoryModel.objects.create(**validated_data)
+
