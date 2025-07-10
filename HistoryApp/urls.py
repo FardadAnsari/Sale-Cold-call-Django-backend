@@ -9,7 +9,7 @@ urlpatterns = [
     path('call-history/', views.CustomerListAPIView.as_view(), name='customer-list'),
     path('shop-detail/<int:pk>/', views.CustomerDetailAPIView.as_view(), name='customer-detail'),
     path('update-customer-detail/', views.UpdateCustomerDetailView.as_view(), name='update-customer-detail'),
-    path('create_history/', views.CreateHistoryView.as_view(), name='create_history'),
+    path('create-history/', views.CreateHistoryView.as_view(), name='create_history'),
 
 
 
