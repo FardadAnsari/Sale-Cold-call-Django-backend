@@ -16,7 +16,7 @@ urlpatterns = [
 
     path('sale-sessions/', views.SaleSessionListAPIView.as_view(), name='salesession-list'),
     path('create-sale-session/', views.CreateSaleSessionView.as_view(), name='sale-session-create'),
-    path('case-sessions-update/<int:pk>/', views.SaleSessionUpdateAPIView.as_view(), name='salesession-update'),
-    path('case-sessions-detail/<int:pk>/', views.SaleSessionDetailAPIView.as_view(), name='salesession-detail'),
+    path('sale-sessions-update/<int:pk>/', views.SaleSessionUpdateAPIView.as_view(), name='salesession-update'),
+    path('sale-sessions-detail/<int:pk>/', views.SaleSessionDetailAPIView.as_view(), name='salesession-detail'),
 
 ]
