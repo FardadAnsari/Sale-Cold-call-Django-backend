@@ -14,7 +14,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('Shops/', include("GoogleMapDataApp.urls")),
     path('user/', include('accounts_user.urls')),
-    path('ai/', include("AiAssisstanceApp.urls")),
+    #path('ai/', include("AiAssisstanceApp.urls")),
     path('history/', include('HistoryApp.urls')),
     path('zoho/', include('zohoapi.urls')),
 

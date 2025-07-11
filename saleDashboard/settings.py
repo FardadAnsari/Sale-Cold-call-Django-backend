@@ -32,7 +32,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'corsheaders',
-    'AiAssisstanceApp',
     'GoogleMapDataApp.apps.GooglemapdataappConfig',
     'HistoryApp.apps.HistoryappConfig',
     'accounts_user.apps.AccountsUserConfig',

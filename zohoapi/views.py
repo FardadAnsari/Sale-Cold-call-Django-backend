@@ -14,7 +14,7 @@ class ZohoAccountsExporter:
     def __init__(self):
         self.client_id = "1000.VRPJQPM9K4QABZX0I1UMYV4VFJ15SU"
         self.client_secret = "c83aff8e09e1880580d9db4268c1402d10be4dd867"
-        self.refresh_token = "1000.cea46f85d414f7d0e8c470d1006b1d69.3f2d966d67736620bfbababee024e565"
+        self.refresh_token = "1000.60bbc7e5c3b4d1dddc47537f30e54009.6ae566a8e44bf21e158472d1d02fcd63"
         self.access_token = self._get_access_token()
 
     def _get_access_token(self):
@@ -70,7 +70,7 @@ class ZohoAccountsExporter:
 
 
 class CreateZohoLeadView(APIView):
-    permission_classes = [Member]
+    # permission_classes = [Member]
 
 
     def post(self, request):
