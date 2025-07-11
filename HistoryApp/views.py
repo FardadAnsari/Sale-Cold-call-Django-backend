@@ -14,8 +14,25 @@ from accounts_user.permissions import SelfInfo, Member
 from GoogleMapDataApp.models import GoogleMapShopsModel
 from accounts_user.permissions import Member
 
-class CustomPagination(PageNumberPagination):
+class HistoryAPIViewpagination(PageNumberPagination):
     page_size = 4
+
+
+
+    def get_paginated_response(self, data):
+        response_data = {
+            "count": self.page.paginator.count,
+            "next": self.get_next_link(),
+            "previous": self.get_previous_link(),
+            'totalPages': self.page.paginator.num_pages,
+            'currentPage': self.page.number,
+            'results': data
+        }
+
+        return Response(response_data)
+    
+class SaleSessionpagination(PageNumberPagination):
+    page_size = 15
 
 
 
@@ -34,7 +51,7 @@ class CustomPagination(PageNumberPagination):
 class HistoryAPIView(ListAPIView):
     permission_classes = [Member, SelfInfo]
     serializer_class = HistoryModelSerializer
-    pagination_class = CustomPagination
+    pagination_class = HistoryAPIViewpagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = HistoryFilter
 
@@ -65,7 +82,7 @@ class HistoryAllCallAPIView(ListAPIView):
     permission_classes = [Member]
 
     serializer_class = HistoryModelSerializer
-    pagination_class = CustomPagination
+    pagination_class = HistoryAPIViewpagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = HistoryFilter
 
@@ -112,6 +129,7 @@ class SaleSessionListAPIView(ListAPIView):
     serializer_class = SaleSessionNameSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = SaleSessionFilter
+    pagination_class = SaleSessionpagination
 
 
 
